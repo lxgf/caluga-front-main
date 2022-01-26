@@ -16,6 +16,7 @@
 }
 
 body {
+  height: 120vh;
   background: rgb(41,10,69);
   background: url('assets/images/background.svg'), linear-gradient(205deg, rgb(30 9 49) 0%, rgba(11,12,22,1) 100%);
   background-size: cover;
@@ -27,6 +28,7 @@ body {
 
 @media (min-width: 768px) {
   body {
+    height: 100vh;
     background-position: center;
     background-size: 60%, 100%;
   }

@@ -1,22 +1,24 @@
 <template xmlns:button="http://www.w3.org/1999/html">
-  <div class="register-modal">
+  <div ref="registerModal" class="register-modal">
     <div class="register-modal__head">
-      <div class="register-modal__head__heading">Регистрация</div>
-      <div class="register-modal__head__close-btn"></div>
+      <div class="register-modal__heading">Регистрация</div>
+      <div @click="this.$store.dispatch('showRegister', false)" class="register-modal__close-btn"></div>
     </div>
-    <form class="register-modal__form">
-      <input autofocus type="text" class="register-modal__form__email" placeholder="Email">
-      <input type="text" class="register-modal__form__password" placeholder="Пароль">
-      <div class="register-modal__form__no-register">Нет аккаунта?</div>
-      <button type="submit" class="register-modal__form__btn btn btn--accent">Войти</button>
+    <form class="register-modal__form form">
+      <input autofocus type="text" class="form__name" placeholder="Имя">
+      <input type="text" class="form__surname" placeholder="Фамилия">
+      <input autofocus type="text" class="form__email" placeholder="Email">
+      <input type="text" class="form__password" placeholder="Пароль">
+      <div @click="this.$store.dispatch('showLogin', true)" class="form__have-account">Уже есть аккаунт?</div>
+      <button type="submit" class="form__btn btn btn--accent">Зарегистрироваться</button>
     </form>
   </div>
 </template>
 
 <style scoped>
 .register-modal {
-  z-index: 10;
   display: flex;
+  z-index: 10;
   flex-direction: column;
   justify-content: center;
   background: radial-gradient(58.95% 50% at 50% 50%, #30004E 0%, #0B0C16 100%);
@@ -32,13 +34,13 @@
   margin-bottom: 2.8rem;
 }
 
-.register-modal__head__heading {
+.register-modal__heading {
   font-size: 2.4rem;
   line-height: 2.2rem;
   font-weight: 500;
 }
 
-.register-modal__head__close-btn {
+.register-modal__close-btn {
   cursor: pointer;
   display: inline;
   width: 2.1rem;
@@ -50,29 +52,29 @@
   transition: all 0.2s 0s ease-in-out;
 }
 
-.register-modal__head__close-btn:hover {
+.register-modal__close-btn:hover {
   opacity: 70%;
 }
 
-.register-modal__form {
+.form {
   display: flex;
   align-items: end;
   flex-direction: column;
   font-size: 2rem;
 }
 
-.register-modal__form__no-register {
+.form__have-account {
   font-size: 1.4rem;
   margin-bottom: 1.2rem;
   transition: .3s ease;
   cursor: pointer;
 }
 
-.register-modal__form__no-register:hover {
+.form__have-account:hover {
   color: #C895FFFF;
 }
 
-.register-modal__form__btn {
+.form__btn {
   width: 100%;
 }
 
@@ -88,3 +90,15 @@
   }
 }
 </style>
+
+<script>
+export default {
+  methods: {
+    show() {
+      let registerModal = this.$refs.registerModal
+      registerModal.classList.add('register-modal--show')
+      registerModal.style.display = 'flex'
+    }
+  }
+}
+</script>

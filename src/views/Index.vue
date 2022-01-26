@@ -1,9 +1,15 @@
 <template>
     <div class="wrapper">
-      <div class="dark-overlay">
-        <LoginModal></LoginModal>
-        <RegisterModal></RegisterModal>
-      </div>
+      <transition name="fade">
+        <div v-if="this.$store.state.isLoginShow" class="dark-overlay">
+          <LoginModal></LoginModal>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div v-if="this.$store.state.isRegisterShow" class="dark-overlay">
+          <RegisterModal></RegisterModal>
+        </div>   
+      </transition>   
       <Header></Header>
       <router-view/>
       <Footer></Footer>
@@ -11,16 +17,44 @@
 </template>
 
 <script>
-    import Header from '../components/Header.vue'
-    import Footer from '../components/Footer.vue'
-    import LoginModal from "../components/LoginModal";
-    import RegisterModal from "../components/RegisterModal";
-export default {
-    components:{RegisterModal, LoginModal, Header, Footer}
-}
+  import Header from '../components/Header.vue'
+  import Footer from '../components/Footer.vue'
+  import LoginModal from "../components/LoginModal";
+  import RegisterModal from "../components/RegisterModal";
+  export default {
+    components: {RegisterModal, LoginModal, Header, Footer},
+  }
 </script>
 
 <style>
+/* fade animations */
+
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter-active {
+  transition: all 0.07s 0s ease-in;
+}
+
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transition: all 0.07s 0s ease-out;
+}
+
+/* - */
+
 .wrapper {
     display: flex;
     height: 100vh;
@@ -38,8 +72,8 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: #00000070;
 }
 
@@ -82,6 +116,7 @@ input[type='text']:focus {
 
 .btn {
   cursor: pointer;
+  user-select: none;
   background: #988C8C52;
   font-weight: 500;
   font-size: 1.3rem;

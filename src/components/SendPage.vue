@@ -7,8 +7,8 @@
   <div class="divider"></div>
   <form class="form">
     <div class="form__wrap">
-      <input autofocus type="text" class="form__wrap__name" placeholder="Имя">
-      <input type="text" class="form__wrap__surname" placeholder="Фамилия">
+      <input autofocus type="text" class="form__name" placeholder="Имя">
+      <input type="text" class="form__surname" placeholder="Фамилия">
     </div>
     <ul ref="scrollRow" @wheel="e => horizontalScroll()" class="form__categories">
       <li>
@@ -38,6 +38,8 @@
 
 <style scoped>
 .heading {
+  display: flex;
+  flex-wrap: wrap;
   font-size: 5rem;
   line-height: 6rem;
 }
@@ -45,10 +47,12 @@
 .heading>p:first-child {
   font-weight: 800;
   opacity: 85%;
+  width: 100%;
 }
 
 .heading>p:last-child {
   font-weight: 900;
+  width: 100%;
 }
 
 .form__wrap {
@@ -89,6 +93,7 @@ input[name='categories'] {
 
 label {
   display: inline-block;
+  user-select: none;
   background: #988C8C62;
   color: #D7D7D785;
   font-size: 1.6rem;
@@ -119,7 +124,7 @@ input[type="radio"]:checked+label {
   outline: none;
   transition: all 0.1s 0s ease-in-out;
   width: 100%;
-  height: 10vh;
+  height: 7rem;
   margin-bottom: .8rem;
   resize: none;
 }
@@ -166,7 +171,7 @@ input[type="radio"]:checked+label {
     flex-wrap: nowrap;
   }
 
-  .form__wrap__name {
+  .form__name {
     margin-right: 10vw;
   }
 
@@ -177,6 +182,20 @@ input[type="radio"]:checked+label {
 
   .form__textarea {
     height: 20vh;
+  }
+
+  .heading {
+    flex-wrap: nowrap;
+  }
+
+  .heading>p:first-child {
+    width: fit-content;
+    margin-right: 1.2rem;
+  }
+
+  .heading>p:last-child {
+    font-weight: 900;
+    width: fit-content;
   }
 }
 </style>

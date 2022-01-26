@@ -1,13 +1,13 @@
 <template>
-<header>
+<header class="header">
   <img src="../assets/images/logo.png" alt="Caluga | Inside" class="header__logo">
-  <div class="btn">Авторизация</div>
+  <div class="btn" @click="this.$store.dispatch('showLogin', true)">Авторизация</div>
 </header>
 </template>
 
 
 <style scoped>
-header {
+.header {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -20,7 +20,7 @@ header {
 }
 
 @media (min-width: 1100px) {
-  header {
+  .header {
     margin-bottom: 6rem;
   }
 }
