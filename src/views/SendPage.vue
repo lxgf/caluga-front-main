@@ -5,31 +5,31 @@
     <p>Заявку</p>
   </div>
   <div class="divider"></div>
-  <form class="form">
+  <form @submit.prevent="sendData" class="form">
     <div class="form__wrap">
-      <input autofocus type="text" class="form__name" placeholder="Имя">
-      <input type="text" class="form__surname" placeholder="Фамилия">
+      <input type="text" class="form__name" :value="updateName" placeholder="Имя" required>
+      <input type="text" class="form__surname" :value="updateSurname" placeholder="Фамилия" required>
     </div>
     <ul ref="scrollRow" @wheel="e => horizontalScroll()" class="form__categories">
       <li>
-        <input type="radio" checked name="categories" id="cat_roads">
+        <input v-model="category" type="radio" value="Дороги" checked name="categories" id="cat_roads">
         <label for="cat_roads">Дороги</label>
       </li>
       <li>
-        <input type="radio" name="categories" id="cat_ecology">
+        <input v-model="category" type="radio" value="Экология" name="categories" id="cat_ecology">
         <label for="cat_ecology">"Экология"</label>
       </li>
       <li>
-        <input type="radio" name="categories" id="cat_social">
+        <input v-model="category" type="radio" value="Социальное" name="categories" id="cat_social">
         <label for="cat_social">"Социальное"</label>
       </li>
       <li>
-        <input type="radio" name="categories" id="cat_other">
+        <input v-model="category" type="radio" value="Другое" name="categories" id="cat_other">
         <label for="cat_other">"Другое"</label>
       </li>
     </ul>
-    <textarea class="form__textarea" placeholder="Описание"></textarea>
-    <input type="file" class="form__file">
+    <textarea autofocus v-model="description" class="form__textarea" placeholder="Описание" required></textarea>
+<!--    <input type="file" class="form__file">-->
     <button type="submit" class="form__btn btn btn--accent">Отправить</button>
   </form>
 </main>
@@ -198,10 +198,22 @@ input[type="radio"]:checked+label {
     width: fit-content;
   }
 }
+
+@media (max-width: 375px) {
+  .heading {
+    font-size: 4.25rem;
+    line-height: 5.25rem;
+  }
+
+  .form__file {
+    font-size: 0;
+  }
+}
 </style>
 
 <script>
 export default {
+  name: "SendPage",
   methods: {
     horizontalScroll(e) {
       e = e || window.event
@@ -209,7 +221,41 @@ export default {
       let scrollRow = this.$refs.scrollRow
       let preSLeft = scrollRow.scrollLeft
       scrollRow.scrollLeft = preSLeft + delta
+    },
+    resetForm() {
+      this.description = ''
+      this.category = 'Дороги'
+    },
+    sendData() {
+      const timestamp = this.$date.toDate()
+      const date = timestamp.getDate()+'.'+(timestamp.getMonth()+1)+'.'+timestamp.getFullYear()
+      const time = timestamp.getHours()+':'+timestamp.getMinutes()
+      if (this.$store.state.isLogin === true) {
+        this.$db.collection(this.$auth.currentUser.uid).add({
+          category: this.category,
+          description: this.description,
+          date: date,
+          time: time
+        })
+        this.resetForm()
+      } else {
+        this.$store.dispatch('showLogin', true)
+      }
     }
-  }
+  },
+  data() {
+    return {
+      description: '',
+      category: 'Дороги'
+    }
+  },
+  computed: {
+    updateName() {
+      return this.$store.state.name;
+    },
+    updateSurname() {
+      return this.$store.state.surname;
+    }
+  },
 }
 </script>

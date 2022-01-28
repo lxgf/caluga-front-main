@@ -2,13 +2,13 @@
   <div ref="loginModal" class="login-modal">
     <div class="login-modal__head">
       <div class="login-modal__heading">Вход</div>
-      <div @click="this.$store.dispatch('showRegister', false)" class="login-modal__close-btn"></div>
+      <div @click="this.$store.dispatch('showLogin', false)" class="login-modal__close-btn"></div>
     </div>
-    <form class="login-modal__form form">
-      <input autofocus type="text" class="form__email" placeholder="Email">
-      <input type="text" class="form__password" placeholder="Пароль">
+    <form @submit.prevent="signIn" class="login-modal__form form">
+      <input v-model='email' autofocus type="text" class="form__email" placeholder="Email" required>
+      <input v-model='password' type="password" class="form__password" placeholder="Пароль" required>
       <div @click="this.$store.dispatch('showRegister', true)" class="form__no-login">Нет аккаунта?</div>
-      <button type="submit" class="form__btn btn btn--accent">Войти</button>
+      <button class="form__btn btn btn--accent">Войти</button>
     </form>
   </div>
 </template>
@@ -23,6 +23,7 @@
   width: 80%;
   padding: 3rem 2.4rem;
   border-radius: 2.4rem;
+  box-shadow: 0 0 18px #23004e;
 }
 
 .login-modal__head {
@@ -88,3 +89,35 @@
   }
 }
 </style>
+
+<script>
+export default {
+  name: "LoginModal",
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    signIn() {
+      this.$auth.signInWithEmailAndPassword(this.email, this.password)
+      .then(() => {
+        this.$store.dispatch('login', true)
+        this.$store.dispatch('showLogin', false)
+        this.$db.collection('users').doc(this.$auth.currentUser.uid).get().then((doc) => {
+          if (doc.exists) {
+            const name = doc.data().name
+            const surname = doc.data().surname
+            this.$store.dispatch('changeName', name)
+            this.$store.dispatch('changeSurname', surname)
+          }
+        })
+      })
+      .catch(error => {
+        alert(error.message)
+      })
+    }
+  }
+}
+</script>

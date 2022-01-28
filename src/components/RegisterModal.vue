@@ -4,13 +4,13 @@
       <div class="register-modal__heading">Регистрация</div>
       <div @click="this.$store.dispatch('showRegister', false)" class="register-modal__close-btn"></div>
     </div>
-    <form class="register-modal__form form">
-      <input autofocus type="text" class="form__name" placeholder="Имя">
-      <input type="text" class="form__surname" placeholder="Фамилия">
-      <input autofocus type="text" class="form__email" placeholder="Email">
-      <input type="text" class="form__password" placeholder="Пароль">
+    <form @submit.prevent='register' class="register-modal__form form">
+      <input v-model='name' autofocus type="text" class="form__name" placeholder="Имя" required>
+      <input v-model='surname' type="text" class="form__surname" placeholder="Фамилия" required>
+      <input v-model='email' autofocus type="text" class="form__email" placeholder="Email" required>
+      <input v-model='password' type="password" class="form__password" placeholder="Пароль" required>
       <div @click="this.$store.dispatch('showLogin', true)" class="form__have-account">Уже есть аккаунт?</div>
-      <button type="submit" class="form__btn btn btn--accent">Зарегистрироваться</button>
+      <button class="form__btn btn btn--accent">Зарегистрироваться</button>
     </form>
   </div>
 </template>
@@ -25,6 +25,7 @@
   width: 80%;
   padding: 3rem 2.4rem;
   border-radius: 2.4rem;
+  box-shadow: 0 0 18px #23004e;
 }
 
 .register-modal__head {
@@ -93,11 +94,39 @@
 
 <script>
 export default {
+  name: "RegisterModal",
   methods: {
     show() {
       let registerModal = this.$refs.registerModal
       registerModal.classList.add('register-modal--show')
       registerModal.style.display = 'flex'
+    },
+    register () {
+      this.$auth.createUserWithEmailAndPassword(this.email, this.password)
+      .then(() => {
+        this.$db.collection('users').doc(this.$auth.currentUser.uid).set({
+          name: this.name,
+          surname: this.surname,
+          email: this.email
+        })
+        .then(() => {
+          this.$store.dispatch('login', true)
+          this.$store.dispatch('showRegister', false)
+          this.$store.dispatch('changeName', this.name)
+          this.$store.dispatch('changeSurname', this.surname)
+        })
+      })
+      .catch(error => {
+        alert(error.message)
+      })
+    }
+  },
+  data() {
+    return {
+      name: '',
+      surname: '',
+      email: '',
+      password: ''
     }
   }
 }

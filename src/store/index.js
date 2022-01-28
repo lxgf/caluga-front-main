@@ -4,7 +4,9 @@ export default createStore({
   state: {
     isLoginShow: false,
     isRegisterShow: false,
-    windowHeight: 0
+    isLogin: false,
+    name: '',
+    surname: ''
   },
   mutations: {
     CHANGE_LOGIN_SHOW_STATUS(state, status) {
@@ -15,9 +17,15 @@ export default createStore({
       state.isRegisterShow = status
       state.isLoginShow = false
     },
-    CHANGE_WINDOW_HEIGHT_STATUS(state, status) {
-      state.windowHeight = status
-    }
+    CHANGE_LOGIN_STATUS(state, status) {
+      state.isLogin = status
+    },
+    CHANGE_NAME(state, name) {
+      state.name = name
+    },
+    CHANGE_SURNAME(state, surname) {
+      state.surname = surname
+    },
   },
   actions: {
     showLogin({ commit }, payload) {
@@ -26,9 +34,15 @@ export default createStore({
     showRegister({ commit }, payload) {
       commit('CHANGE_REGISTER_SHOW_STATUS', payload)
     },
-    windowHeight({ commit }, payload) {
-      commit('CHANGE_WINDOW_HEIGHT_STATUS', payload)
-    }
+    login({ commit }, payload){
+      commit('CHANGE_LOGIN_STATUS', payload)
+    },
+    changeName({ commit }, payload){
+      commit('CHANGE_NAME', payload)
+    },
+    changeSurname({ commit }, payload){
+      commit('CHANGE_SURNAME', payload)
+    },
   },
   modules: {
   }

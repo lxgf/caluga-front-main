@@ -21,4 +21,21 @@ footer {
   font-size: 1.5rem;
   color: #AF5CE1;
 }
+
+@media (max-height: 650px) {
+  footer {
+    display: none;
+  }
+}
 </style>
+
+<script>
+export default {
+  name: "Footer",
+  data() {
+    return {
+      
+    }
+  }
+}
+</script>
